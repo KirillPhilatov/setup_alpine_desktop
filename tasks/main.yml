@@ -1,0 +1,96 @@
+---
+# tasks file for setup-alpine-desktop
+
+# update repositories and install packages
+
+- name: Update repositories and install pkgs
+  community.general.apk:
+    name: "{{ pkgs }}"
+    state: latest
+    update_cache: true
+  tags: packages
+
+# ensure "permit persist :wheel" in doas.conf
+
+- name: Doas.conf
+  ansible.builtin.lineinfile:
+    path: "{{ doas_path }}"
+    line: "permit persist :wheel"
+    state: present
+  tags: doas
+
+# add main user to wheel group
+
+- name: Ensure that user in wheel group and uses bash
+  ansible.builtin.user:
+    name: "{{ user }}"
+    shell: /bin/bash
+    groups: wheel
+    append: true
+  tags: user
+
+# customize .bash_profile and .bashrc
+
+- name: Dot files
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "/home/{{ user }}/"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: 0644
+  with_items:
+    - .bash_profile
+    - .bashrc
+    - .xinitrc
+    - .Xdefaults
+  tags: files
+
+# copy useful scripts to /bin/utils
+
+- name: Ensure bin/utils created
+  ansible.builtin.file:
+    path: "/home/{{ user }}/bin/utils"
+    owner: "{{ user }}"
+    mode: 0700
+    state: directory
+
+- name: Copy utils
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "/home/{{ user }}/bin/utils/"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: 0755
+  with_fileglob:
+    - "utils/*"
+  tags: files
+
+# setup emacs
+
+- name: Ensure emacs.d created
+  ansible.builtin.file:
+    path: "/home/{{ user }}/.emacs.d"
+    owner: "{{ user }}"
+    mode: 0700
+    state: directory
+
+- name: Emacs init config
+  ansible.builtin.copy:
+    src: emacs/init.el
+    dest: "/home/{{ user }}/.emacs.d/init.el"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: 0644
+  tags: files
+
+# suckless tools
+
+- name: Suckless
+  ansible.builtin.copy:
+    src: suckless
+    dest: "/home/{{ user }}/"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: 0755
+    directory_mode: true
+  tags: files
