@@ -1,2 +1,5 @@
 meta/
 TODO.org
+files/suckless/
+!files/suckless/archives
+!files/suckless/*-*

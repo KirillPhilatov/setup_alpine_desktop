@@ -1,7 +1,6 @@
 Role Name
 =========
-
-Customize alpine for convenient desktop usage.
+This is ansible role for customizing Alpine Linux for convenient desktop usage.
 
 Requirements
 ------------

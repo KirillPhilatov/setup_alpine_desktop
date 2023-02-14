@@ -18,6 +18,7 @@ XTerm*font: -*-terminus-*-*-*-*-22-*-*-*-*-*-*-*
 XTerm*background:       #000000
 XTerm*foreground:       gray75
 XTerm*metaSendsEscape: true
+XTerm*fullscreen: never
 
 XTerm*highlightSelection:  true
 ! Uncomment this to use color for the bold attribute
