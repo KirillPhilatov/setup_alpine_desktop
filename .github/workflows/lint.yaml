@@ -8,7 +8,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Install linter
-        run: apt update && apt install ansible-lint
+        run: sudo apt update -y && sudo apt install -y ansible-lint
 
       - name: Lint tasks/main.yml
         run: ansible-lint -v tasks/main.yml
