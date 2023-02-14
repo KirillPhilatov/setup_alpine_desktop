@@ -7,14 +7,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Setup pyhton
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-          cache: 'pip'
-
       - name: Install linter
-        run: pip install ansible-lint
+        run: apt update && apt install ansible-lint
 
       - name: Lint tasks/main.yml
         run: ansible-lint -v tasks/main.yml
