@@ -94,3 +94,14 @@
     mode: 0755
     directory_mode: true
   tags: files
+
+- name: Xorg
+  ansible.builtin.copy:
+    src: xorg/00-keyboard.conf
+    dest: "/etc/X11/xorg.conf.d/"
+    owner: "root"
+    group: "root"
+    mode: 0644
+  tags:
+    - files
+    - xorg
