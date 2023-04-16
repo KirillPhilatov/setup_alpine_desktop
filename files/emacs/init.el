@@ -3,3 +3,5 @@
 
 (setq auto-complete-mode t)
 (setq column-number-mode t)
+
+(global-set-key "\C-c\C-x" 'kill-this-buffer)
